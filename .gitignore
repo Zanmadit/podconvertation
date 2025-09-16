@@ -1,0 +1,87 @@
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# pip cache
+pip-log.txt
+pip-delete-this-directory.txt
+
+# pytest
+.cache/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# pyre type checker
+.pyre/
+
+# ----------------------
+# OS files
+# ----------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ----------------------
+# Jupyter
+# ----------------------
+.ipynb_checkpoints
+*.ipynb
+
+# ----------------------
+# PyTorch / Torch Hub / models
+# ----------------------
+*.pt
+*.pth
+*.ckpt
+*.tar
+*.zip
+*.onnx
+
+# Torch Hub cache
+~/.cache/torch/hub/
+*.model
+
+# ----------------------
+# Logs
+# ----------------------
+*.log
+
+# ----------------------
+# Editor
+# ----------------------
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# ----------------------
+# Output / build
+# ----------------------
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,49 @@
+Here are the 7 slides:
+
+**Slide 1: Introduction to Learning Python**
+Title: Learning Python the Right Way
+Points:
+- Find something you actually want to do with Python
+- Having a project or goal in mind is crucial for motivation
+
+**Slide 2: Choosing a Project**
+Title: Pick a Project that Challenges You
+Points:
+- It can be a crazy problem you want to solve
+- It can be a small bot or automating a task
+- Make it something that interests you
+
+**Slide 3: Using Pre-trained Models and Machine Learning**
+Title: Using Machine Learning to Learn Python
+Points:
+- Use pre-trained models to do something cool
+- Learn just enough to run the model and figure out the basics
+- A good way to get started with Python and machine learning
+
+**Slide 4: Learning Python in a Short Amount of Time**
+Title: Can You Learn Python in a Short Amount of Time?
+Points:
+- You can't expect to learn Python from a one-hour video
+- But, you can learn something in an hour to get hooked
+- It takes skill to be an educator and condense complex ideas into a short time
+
+**Slide 5: The Role of Practice and Experience**
+Title: The Importance of Practice and Experience
+Points:
+- You can memorize syntax, but that doesn't make you a coder
+- The 10-year experience is about the pain and practice along the way
+- Coding involves copying and adjusting code from others
+
+**Slide 6: The Impact of AI on Coding**
+Title: The Future of Coding with AI
+Points:
+- AI-powered tools like GitHub Copilot can write code for you
+- These tools can save time and be a great assistant
+- But, they don't replace the creative work of deciding what to do
+
+**Slide 7: The Future of Programming Jobs**
+Title: Are Programming Jobs Threatened by AI?
+Points:
+- AI helps with boring tasks, but doesn't replace creative work
+- Programmers' jobs are not threatened by AI or Stack Overflow
+- AI is a tool to augment and assist, not replace human programmers
