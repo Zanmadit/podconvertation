@@ -303,25 +303,26 @@
 
       function showDownloads(resp){
         downloadsEl.querySelectorAll('.download-btn').forEach(n=>n.remove());
-        if (resp.presentation){
-          const a = document.createElement('a');
-          a.className = 'download-btn';
-          a.href = resp.presentation;
-          a.target = '_blank';
-          a.innerHTML = `<span class="label">📄 Presentation</span><span class="hint">Download PPTX</span>`;
-          downloadsEl.appendChild(a);
-        }
-        if (resp.video){
-          const a = document.createElement('a');
-          a.className = 'download-btn';
-          a.href = resp.video;
-          a.target = '_blank';
-          a.innerHTML = `<span class="label">🎬 Video</span><span class="hint">Play / Download MP4</span>`;
-          downloadsEl.appendChild(a);
-        }
+
+        const pptxUrl = "http://127.0.0.1:8000/output/presentation.pptx";
+        const mp4Url  = "http://127.0.0.1:8000/output/presentation.mp4";
+
+        const pptxBtn = document.createElement('a');
+        pptxBtn.className = 'download-btn';
+        pptxBtn.href = pptxUrl;
+        pptxBtn.download = 'presentation.pptx';
+        pptxBtn.innerHTML = `<span class="label">📄 Presentation</span><span class="hint">Download PPTX</span>`;
+        downloadsEl.appendChild(pptxBtn);
+
+        const mp4Btn = document.createElement('a');
+        mp4Btn.className = 'download-btn';
+        mp4Btn.href = mp4Url;
+        mp4Btn.download = 'presentation.mp4';
+        mp4Btn.innerHTML = `<span class="label">🎬 Video</span><span class="hint">Download MP4</span>`;
+        downloadsEl.appendChild(mp4Btn);
       }
 
-      // expose quick helpers to console
+
       window.__podUI = { resetUI, showDownloads };
     })();
   </script>
