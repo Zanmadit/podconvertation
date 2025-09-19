@@ -84,7 +84,7 @@ def extract_slide_texts(pptx_path: str):
         slides_texts.append(narration)
     return slides_texts
 
-def make_video_from_pptx(
+def make_video(
     pptx_file="output/presentation.pptx",
     out_dir="output",
     lang="en",
@@ -165,7 +165,7 @@ def make_video_from_pptx(
 
 if __name__ == "__main__":
     try:
-        make_video_from_pptx(pptx_file="output/presentation.pptx", out_dir="output", lang="en", cleanup=False)
+        make_video(pptx_file="output/presentation.pptx", out_dir="output", lang="en", cleanup=False)
     except Exception as e:
         print("[ERROR]", e)
         sys.exit(1)
