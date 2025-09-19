@@ -15,7 +15,9 @@ def summarize(input_path="data/transcripts/transcript.txt", out_path="data/slide
         "model": MODEL_NAME,
         "messages": [
             {"role": "system", "content": "You are an assistant, you write slide outlines."},
-            {"role": "user", "content": f"Break the text into 5–7 slides.\nFormat:\nTitle: ...\nPoints:\n- ...\n- ...\n\nText:\n{transcript}"}
+            {"role": "user", "content": f"Break the text into 5–7 slides.\n"
+                                        f"Format:\nSlide N:\nTitle: ...\nPoints:\n- ...\n- ...\n\n"
+                                        f"Text:\n{transcript}"}
         ]
     }
 
@@ -23,13 +25,20 @@ def summarize(input_path="data/transcripts/transcript.txt", out_path="data/slide
     response.raise_for_status()
     result = response.json()["choices"][0]["message"]["content"]
 
-    cleaned = re.sub(r"(?i)Slide\s*\d+:?", "", result)
+    cleaned = result.lstrip()  
+    if cleaned.startswith("Slide"):
+        cleaned = cleaned  
+    else:
+        idx = cleaned.find("Slide")
+        if idx != -1:
+            cleaned = cleaned[idx:]
 
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(cleaned.strip())
 
     print(f"[INFO] Slides outline saved to {out_path}")
     return cleaned
+
 
 if __name__ == "__main__":
     summarize()
