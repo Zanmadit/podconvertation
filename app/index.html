@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Podcast → Presentation</title>
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --accent-start:#4f46e5;
+      --accent-end:#06b6d4;
+      --success:#10b981;
+      --danger:#ef4444;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #071029 0%, #071827 60%), var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .container{
+      width:100%;
+      max-width:920px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:14px;
+      padding:26px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:white;
+      box-shadow: 0 6px 18px rgba(79,70,229,0.18), inset 0 -3px 8px rgba(255,255,255,0.03);
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .grid{display:grid;grid-template-columns:1fr 360px; gap:20px}
+    @media (max-width:880px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .file-input{
+      display:flex;gap:12px;align-items:center;
+    }
+    .file-drop{
+      flex:1;
+      border:2px dashed rgba(255,255,255,0.04);
+      padding:18px;border-radius:10px;background:transparent;cursor:pointer;
+      display:flex;align-items:center;gap:12px;color:var(--muted);
+    }
+    .file-drop input{display:none}
+    .file-meta{font-size:13px;color:#cfe7ff}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
+      box-shadow: 0 6px 18px rgba(6,182,212,0.08);
+    }
+    .btn.secondary{
+      background:#0b1220;border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-weight:600;
+    }
+    .btn:disabled{opacity:0.6;cursor:not-allowed}
+
+    .progress-wrap{margin-top:12px}
+    .progress{
+      height:10px;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden;
+    }
+    .progress > i{
+      display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      transition: width 0.25s linear;
+    }
+    .status{margin-top:10px;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center}
+
+    .downloads{display:flex;flex-direction:column;gap:10px}
+    .download-btn{
+      display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.025);color:var(--muted);text-decoration:none;font-weight:600;
+    }
+    .download-btn .label{display:flex;gap:10px;align-items:center}
+    .download-btn .hint{font-size:12px;color:var(--muted)}
+
+    /* spinner */
+    .spinner{
+      width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.08);
+      border-top-color: white; animation:spin 1s linear infinite; display:inline-block;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* footer */
+    footer{margin-top:18px;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo">P→P</div>
+      <div>
+        <h1 id="title">Podcast → Presentation</h1>
+        <p class="lead">Upload a podcast, get an automatic slides deck and a short video presentation.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Upload & Status -->
+      <div>
+        <div class="card" aria-live="polite">
+          <form id="uploadForm">
+            <div class="file-input">
+              <label class="file-drop" id="fileDropLabel">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M12 3v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 7l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="3" y="13" width="18" height="8" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                </svg>
+                <div>
+                  <div style="font-weight:700;color:#e6eef8">Drop or choose audio</div>
+                  <div class="file-meta" id="fileMeta">MP3 / WAV — up to your disk</div>
+                </div>
+                <input id="fileInput" name="file" type="file" accept="audio/*" />
+              </label>
+
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button type="button" id="uploadBtn" class="btn" disabled>Upload & Convert</button>
+                <button type="button" id="resetBtn" class="btn secondary">Reset</button>
+              </div>
+            </div>
+
+            <div class="progress-wrap" aria-hidden>
+              <div class="progress" title="upload progress"><i id="progressFill"></i></div>
+            </div>
+
+            <div class="status" id="statusLine">
+              <span id="statusText">No file selected</span>
+              <span id="statusSpin" style="display:none"><span class="spinner" aria-hidden></span></span>
+            </div>
+          </form>
+        </div>
+
+        <footer>
+          Tip: For best results use a clear stereo MP3 (44.1kHz) or WAV file.
+        </footer>
+      </div>
+
+      <!-- Right: Downloads / Preview -->
+      <aside>
+        <div class="card">
+          <h3 style="margin-top:0;margin-bottom:8px">Outputs</h3>
+          <div id="downloads" class="downloads">
+            <div class="hint" style="color:var(--muted);font-size:13px">After conversion, download files here.</div>
+            <!-- download links injected here -->
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin-top:0;margin-bottom:6px">Last run</h3>
+          <div id="lastrun" style="color:var(--muted);font-size:13px">No runs yet</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const fileInput = document.getElementById('fileInput');
+      const fileDropLabel = document.getElementById('fileDropLabel');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const statusText = document.getElementById('statusText');
+      const statusSpin = document.getElementById('statusSpin');
+      const progressFill = document.getElementById('progressFill');
+      const downloadsEl = document.getElementById('downloads');
+      const lastrunEl = document.getElementById('lastrun');
+
+      let currentFile = null;
+      let xhr = null;
+
+      function setStatus(text, busy=false){
+        statusText.textContent = text;
+        statusSpin.style.display = busy ? 'inline-block' : 'none';
+      }
+
+      function resetUI(){
+        currentFile = null;
+        fileInput.value = '';
+        uploadBtn.disabled = true;
+        progressFill.style.width = '0%';
+        downloadsEl.querySelectorAll('.download-btn').forEach(n=>n.remove());
+        setStatus('No file selected', false);
+      }
+
+      // initial
+      resetUI();
+
+      // file select
+      fileInput.addEventListener('change', (e)=>{
+        const f = e.target.files[0];
+        if (!f) return resetUI();
+        currentFile = f;
+        uploadBtn.disabled = false;
+        setStatus(`${f.name} selected (${Math.round(f.size/1024)} KB)`, false);
+      });
+
+      // drag & drop UX
+      fileDropLabel.addEventListener('dragover', e=>{ e.preventDefault(); fileDropLabel.style.borderColor = 'rgba(255,255,255,0.12)'; });
+      fileDropLabel.addEventListener('dragleave', e=>{ fileDropLabel.style.borderColor = ''; });
+      fileDropLabel.addEventListener('drop', e=>{
+        e.preventDefault();
+        fileDropLabel.style.borderColor = '';
+        const f = e.dataTransfer.files[0];
+        if(!f) return;
+        fileInput.files = e.dataTransfer.files;
+        const ev = new Event('change'); fileInput.dispatchEvent(ev);
+      });
+
+      // reset
+      resetBtn.addEventListener('click', resetUI);
+
+      // upload via XHR so we can track upload progress
+      uploadBtn.addEventListener('click', async ()=>{
+        if (!currentFile) return alert('Please select an audio file first.');
+
+        // prepare
+        uploadBtn.disabled = true;
+        resetBtn.disabled = true;
+        setStatus('Uploading file...', true);
+        progressFill.style.width = '3%';
+
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:8000/upload', true);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 85); // use up to 85% for upload
+            progressFill.style.width = pct + '%';
+            setStatus(`Uploading: ${pct}%`, true);
+          }
+        };
+
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            resetBtn.disabled = false;
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                const resp = JSON.parse(xhr.responseText);
+                if (resp.error) {
+                  setStatus('Server error: ' + resp.error, false);
+                  progressFill.style.width = '0%';
+                } else {
+                  // show processing -> final
+                  setStatus('Processing on server... (this may take a while)', true);
+                  progressFill.style.width = '88%';
+                  // small delay to allow UX before final update
+                  setTimeout(()=> {
+                    progressFill.style.width = '100%';
+                    setStatus('Done', false);
+                    showDownloads(resp);
+                    lastrunEl.textContent = new Date().toLocaleString();
+                  }, 800);
+                }
+              } catch (err) {
+                setStatus('Invalid server response', false);
+                console.error('Invalid JSON', xhr.responseText, err);
+              }
+            } else {
+              setStatus(`Upload failed (${xhr.status})`, false);
+              console.error('Upload error', xhr.responseText);
+            }
+            uploadBtn.disabled = false;
+          }
+        };
+
+        xhr.onerror = () => {
+          setStatus('Network error during upload', false);
+          uploadBtn.disabled = false;
+          resetBtn.disabled = false;
+        };
+
+        // build form
+        const fd = new FormData();
+        fd.append('file', currentFile, currentFile.name);
+        xhr.send(fd);
+      });
+
+      function showDownloads(resp){
+        downloadsEl.querySelectorAll('.download-btn').forEach(n=>n.remove());
+        if (resp.presentation){
+          const a = document.createElement('a');
+          a.className = 'download-btn';
+          a.href = resp.presentation;
+          a.target = '_blank';
+          a.innerHTML = `<span class="label">📄 Presentation</span><span class="hint">Download PPTX</span>`;
+          downloadsEl.appendChild(a);
+        }
+        if (resp.video){
+          const a = document.createElement('a');
+          a.className = 'download-btn';
+          a.href = resp.video;
+          a.target = '_blank';
+          a.innerHTML = `<span class="label">🎬 Video</span><span class="hint">Play / Download MP4</span>`;
+          downloadsEl.appendChild(a);
+        }
+      }
+
+      // expose quick helpers to console
+      window.__podUI = { resetUI, showDownloads };
+    })();
+  </script>
+</body>
+</html>

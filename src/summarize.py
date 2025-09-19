@@ -1,19 +1,20 @@
 import requests
 import json
+import re
 
-API_URL = "https://bkwg3037dnb7aq-8000.proxy.runpod.net/v1/chat/completions"
+API_URL = "https://vsjz8fv63q4oju-8000.proxy.runpod.net/v1/chat/completions"
 MODEL_NAME = "llama4scout"
 
 def summarize(input_path="data/transcripts/transcript.txt", out_path="data/slides_outline.txt"):
     with open(input_path, "r", encoding="utf-8") as f:
         transcript = f.read()
 
-    print("[INFO] Sending transcript to shai.pro...")
+    print("[INFO] Sending transcript to model...")
     headers = {"Content-Type": "application/json"}
     data = {
         "model": MODEL_NAME,
         "messages": [
-            {"role": "system", "content": "You are an assistant, you write resumes."},
+            {"role": "system", "content": "You are an assistant, you write slide outlines."},
             {"role": "user", "content": f"Break the text into 5–7 slides.\nFormat:\nTitle: ...\nPoints:\n- ...\n- ...\n\nText:\n{transcript}"}
         ]
     }
@@ -22,11 +23,13 @@ def summarize(input_path="data/transcripts/transcript.txt", out_path="data/slide
     response.raise_for_status()
     result = response.json()["choices"][0]["message"]["content"]
 
+    cleaned = re.sub(r"(?i)Slide\s*\d+:?", "", result)
+
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(result)
+        f.write(cleaned.strip())
 
     print(f"[INFO] Slides outline saved to {out_path}")
-    return result
+    return cleaned
 
 if __name__ == "__main__":
     summarize()
