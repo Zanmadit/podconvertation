@@ -1,34 +1,28 @@
-import requests
-import json
-import re
-
-API_URL = "https://vsjz8fv63q4oju-8000.proxy.runpod.net/v1/chat/completions"
-MODEL_NAME = "llama4scout"
+import subprocess
 
 def summarize(input_path="data/transcripts/transcript.txt", out_path="data/slides_outline.txt"):
     with open(input_path, "r", encoding="utf-8") as f:
         transcript = f.read()
 
-    print("[INFO] Sending transcript to model...")
-    headers = {"Content-Type": "application/json"}
-    data = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": "You are an assistant, you write slide outlines."},
-            {"role": "user", "content": f"Break the text into 5–7 slides.\n"
-                                        f"Format:\nSlide N:\nTitle: ...\nPoints:\n- ...\n- ...\n\n"
-                                        f"Text:\n{transcript}"}
-        ]
-    }
+    print("[INFO] Sending transcript to Ollama (gemma3:4b)...")
 
-    response = requests.post(API_URL, headers=headers, data=json.dumps(data))
-    response.raise_for_status()
-    result = response.json()["choices"][0]["message"]["content"]
+    prompt = (
+        "You are an assistant, you write slide outlines.\n"
+        "Break the text into 5–7 slides.\n"
+        "Format:\nSlide N:\nTitle: ...\nPoints:\n- ...\n- ...\n\n"
+        f"Text:\n{transcript}"
+    )
 
-    cleaned = result.lstrip()  
-    if cleaned.startswith("Slide"):
-        cleaned = cleaned  
-    else:
+    result = subprocess.run(
+        ["ollama", "run", "gemma3:4b"],
+        input=prompt.encode("utf-8"),
+        capture_output=True
+    )
+
+    output = result.stdout.decode("utf-8").strip()
+
+    cleaned = output.lstrip()
+    if not cleaned.startswith("Slide"):
         idx = cleaned.find("Slide")
         if idx != -1:
             cleaned = cleaned[idx:]
