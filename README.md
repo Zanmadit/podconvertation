@@ -1,6 +1,6 @@
 # Podconvertation
 
-An application capable of generating a presentation/video presentation from an audio file. Whatever it may be—a university lecture, podcast, and much more.
+An application capable of generating a presentation/video presentation from an audio file. Whatever it may be - a university lecture, podcast, and much more.
 
 
 Instructions for use are provided below.
