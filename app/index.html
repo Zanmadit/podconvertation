@@ -99,14 +99,12 @@
     .download-btn .label{display:flex;gap:10px;align-items:center}
     .download-btn .hint{font-size:12px;color:var(--muted)}
 
-    /* spinner */
     .spinner{
       width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.08);
       border-top-color: white; animation:spin 1s linear infinite; display:inline-block;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* footer */
     footer{margin-top:18px;color:var(--muted);font-size:12px}
   </style>
 </head>
@@ -121,7 +119,6 @@
     </header>
 
     <div class="grid">
-      <!-- Left: Upload & Status -->
       <div>
         <div class="card" aria-live="polite">
           <form id="uploadForm">
@@ -161,13 +158,11 @@
         </footer>
       </div>
 
-      <!-- Right: Downloads / Preview -->
       <aside>
         <div class="card">
           <h3 style="margin-top:0;margin-bottom:8px">Outputs</h3>
           <div id="downloads" class="downloads">
             <div class="hint" style="color:var(--muted);font-size:13px">After conversion, download files here.</div>
-            <!-- download links injected here -->
           </div>
         </div>
 
@@ -208,10 +203,8 @@
         setStatus('No file selected', false);
       }
 
-      // initial
       resetUI();
 
-      // file select
       fileInput.addEventListener('change', (e)=>{
         const f = e.target.files[0];
         if (!f) return resetUI();
@@ -220,7 +213,6 @@
         setStatus(`${f.name} selected (${Math.round(f.size/1024)} KB)`, false);
       });
 
-      // drag & drop UX
       fileDropLabel.addEventListener('dragover', e=>{ e.preventDefault(); fileDropLabel.style.borderColor = 'rgba(255,255,255,0.12)'; });
       fileDropLabel.addEventListener('dragleave', e=>{ fileDropLabel.style.borderColor = ''; });
       fileDropLabel.addEventListener('drop', e=>{
@@ -232,14 +224,11 @@
         const ev = new Event('change'); fileInput.dispatchEvent(ev);
       });
 
-      // reset
       resetBtn.addEventListener('click', resetUI);
 
-      // upload via XHR so we can track upload progress
       uploadBtn.addEventListener('click', async ()=>{
         if (!currentFile) return alert('Please select an audio file first.');
 
-        // prepare
         uploadBtn.disabled = true;
         resetBtn.disabled = true;
         setStatus('Uploading file...', true);
@@ -250,7 +239,7 @@
 
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
-            const pct = Math.round((e.loaded / e.total) * 85); // use up to 85% for upload
+            const pct = Math.round((e.loaded / e.total) * 85); 
             progressFill.style.width = pct + '%';
             setStatus(`Uploading: ${pct}%`, true);
           }
@@ -266,10 +255,8 @@
                   setStatus('Server error: ' + resp.error, false);
                   progressFill.style.width = '0%';
                 } else {
-                  // show processing -> final
                   setStatus('Processing on server... (this may take a while)', true);
                   progressFill.style.width = '88%';
-                  // small delay to allow UX before final update
                   setTimeout(()=> {
                     progressFill.style.width = '100%';
                     setStatus('Done', false);
@@ -295,7 +282,6 @@
           resetBtn.disabled = false;
         };
 
-        // build form
         const fd = new FormData();
         fd.append('file', currentFile, currentFile.name);
         xhr.send(fd);

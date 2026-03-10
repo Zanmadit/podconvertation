@@ -5,10 +5,10 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from app.config import settings
 
 app = FastAPI()
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,20 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATA_DIR = "data/podcasts"
-OUTPUT_DIR = "output"
-FRONTEND_DIR = "frontend"
+os.makedirs(settings.DATA_DIR, exist_ok=True)
+os.makedirs(settings.OUTPUT_DIR, exist_ok=True)
+os.makedirs(settings.FRONTEND_DIR, exist_ok=True)
 
-os.makedirs(DATA_DIR, exist_ok=True)
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(FRONTEND_DIR, exist_ok=True)
-
-app.mount("/output", StaticFiles(directory=OUTPUT_DIR), name="output")
-app.mount("/frontend", StaticFiles(directory=FRONTEND_DIR), name="frontend")
+app.mount("/output", StaticFiles(directory=settings.OUTPUT_DIR), name="output")
+app.mount("/frontend", StaticFiles(directory=settings.FRONTEND_DIR), name="frontend")
 
 @app.get("/")
 async def root():
-    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    index_path = os.path.join(settings.FRONTEND_DIR, "index.html")
     if os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
             return HTMLResponse(f.read())
@@ -39,19 +35,19 @@ async def root():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    file_path = os.path.join(DATA_DIR, "podcast.mp3")
+    file_path = os.path.join(settings.DATA_DIR, "podcast.mp3")
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
     try:
         print("[INFO] Starting pipeline...")
-        subprocess.run(["python", "src/pipeline.py"], check=True)
+        subprocess.run(["python", "app/pipeline.py"], check=True)
     except subprocess.CalledProcessError as e:
         return {"error": f"Pipeline failed: {e}"}
 
-    video_path = os.path.join(OUTPUT_DIR, "presentation.mp4")
-    pptx_path = os.path.join(OUTPUT_DIR, "presentation.pptx")
+    video_path = os.path.join(settings.OUTPUT_DIR, "presentation.mp4")
+    pptx_path = os.path.join(settings.OUTPUT_DIR, "presentation.pptx")
 
     if not os.path.exists(video_path):
         return {"error": "Video not found"}

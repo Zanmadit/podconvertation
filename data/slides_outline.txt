@@ -1,0 +1,41 @@
+Slide 1: Finding Motivation – Start with a Project
+-   Title: Start with a Problem You Care About
+-   Points:
+-   “I want to learn skill X” isn’t enough motivation; aim for a real challenge.
+-   It can be a crazy, unrealistic project – the point is to learn to code.
+Slide 2: Small Projects, Big Impact
+-   Title:  Start Small, Think Big
+-   Points:
+-   Projects don't have to be massive – a simple bot is a great starting point.
+-   Examples: Reddit/Twitter bots, automating daily tasks, processing files.
+-   Leverage machine learning components for "cool" projects (tutorials can get you started quickly).
+Slide 3: The 10-Year Learning Curve
+-   Title:  Embrace the Long Game
+-   Points:
+-   Don’t be fooled by “learn Python in 5 days” promises – they’re usually ineffective.
+-   Richard Feynman’s example – condensing complex ideas into understandable terms.
+-   The 10-year timeframe is about experience and overcoming challenges.
+Slide 4: Coding as a Process - Stack Overflow & Beyond
+-   Title: Coding is a Cycle
+-   Points:
+-   Coding often involves copying and pasting from Stack Overflow – it’s a valid, efficient strategy.
+-   Adapt and adjust, not just blindly copy.
+-   Coding has changed – a more collaborative and iterative approach.
+Slide 5: Introducing GitHub Copilot
+-   Title:  AI as a Coding Partner: GitHub Copilot
+-   Points:
+-   Copilot is a powerful code generation tool that speeds up development.
+-   It helps with repetitive tasks and provides intelligent suggestions.
+-   It’s not a replacement for understanding, but a valuable assistant.
+Slide 6:  Copilot in Practice - A Helpful Assistant
+-   Title: Copilot: Reminding You of Best Practices
+-   Points:
+-   Copilot excels at recalling syntax, API details, and object properties.
+-   It’s a great tool for quickly retrieving information you’ve forgotten.
+-   Uses an example - “begin” and “end” tokens.
+Slide 7: The Future of Programming
+-   Title:  Humans and AI: A Symbiotic Relationship
+-   Points:
+-   Don’t fear automatic code generation - it's a tool to augment your abilities.
+-   Use Copilot to handle the “boring stuff,” freeing you for creative problem-solving.
+-   The best use case:  “Please remind me how to do this…” – a collaborative dance between human and AI.

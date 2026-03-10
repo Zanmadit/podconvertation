@@ -9,6 +9,7 @@ env/
 ENV/
 .venv/
 .ENV/
+.env
 
 # pip cache
 pip-log.txt
@@ -72,3 +73,4 @@ Desktop.ini
 dist/
 build/
 *.egg-info/
+output/*

@@ -1,6 +1,12 @@
 import os
+import sys
 from diffusers import StableDiffusionPipeline
 import torch
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from app.config import settings
 
 def generate_images(
     slides_file="data/slides_outline.txt",
@@ -12,10 +18,10 @@ def generate_images(
     with open(slides_file, "r", encoding="utf-8") as f:
         slides = f.read().split("Slide")
 
-    print("[INFO] Loading Stable Diffusion v1.5 on GPU...")
+    print("[INFO] Loading Image Generator on GPU...")
     pipe = StableDiffusionPipeline.from_pretrained(
-        "runwayml/stable-diffusion-v1-5",
-        torch_dtype=torch.float16,
+        settings.IMG_MODEL,
+        dtype=torch.float16,
     ).to("cuda")
 
     pipe.safety_checker = None  

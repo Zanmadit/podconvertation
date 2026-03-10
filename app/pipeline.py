@@ -1,14 +1,14 @@
-from transcribe import transcribe
-from summarize import summarize
-from generate_images import generate_images
-from generate_pptx import generate_pptx
-from make_video import make_video
+from src.transcribe import transcribe
+from src.summarize import summarize
+from src.generate_images import generate_images
+from src.generate_pptx import generate_pptx
+from src.make_video import make_video
 
 def main():
     print("[PIPELINE] Step 1: Transcription")
     transcribe()
 
-    print("[PIPELINE] Step 2: Summarization (shai.pro)")
+    print("[PIPELINE] Step 2: Summarization")
     summarize()
 
     print("[PIPELINE] Step 3: Image Generation")
